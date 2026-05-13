@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recipe Results</title>
+</head>
+<body>
+    <h1>Recipe Results</h1>
+
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Search Again</button>
+    </form>
+
+    <hr>
+
+    {% if results %}
+        {% for result in results %}
+            <div>
+                <h2>
+                    <a href="{% url 'recipe_detail' result.recipe.id %}?ingredients={{ form.cleaned_data.ingredients }}">
+                        {{ result.recipe.name }}
+                    </a>
+                </h2>
+
+                <p>Score: {{ result.score }}%</p>
+                <p>Prep time: {{ result.recipe.prep_time }} minutes</p>
+                <p>Cuisine: {{ result.recipe.cuisine }}</p>
+
+                <p>
+                    Matched ingredients:
+                    {{ result.matched_ingredients|join:", " }}
+                </p>
+
+                <p>
+                    Missing ingredients:
+                    {{ result.missing_ingredients|join:", " }}
+                </p>
+            </div>
+
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No recipes matched your search.</p>
+    {% endif %}
+</body>
+</html>
+

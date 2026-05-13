@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ recipe.name }}</title>
+</head>
+<body>
+    <h1>{{ recipe.name }}</h1>
+
+    <p>Prep time: {{ recipe.prep_time }} minutes</p>
+    <p>Cuisine: {{ recipe.cuisine }}</p>
+    <p>Dietary preference: {{ recipe.dietary_preference }}</p>
+
+    <h2>Ingredients</h2>
+
+    <ul>
+        {% for ingredient in recipe.ingredients.all %}
+            <li>
+                {{ ingredient.name }}
+
+                {% if ingredient.name|lower in matched %}
+                    — you have this
+                {% elif ingredient.name|lower in missing %}
+                    — missing
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+
+    <h2>Instructions</h2>
+
+    <p>{{ recipe.instructions }}</p>
+
+
+    <section>
+  <h2>Similar recipes</h2>
+
+  {% if similar_recipes %}
+    <div class="similar-recipes">
+      {% for result in similar_recipes %}
+        <article class="recipe-card">
+          <h3>
+            <a href="{% url 'recipe_detail' result.recipe.id %}?ingredients={{ user_ingredients_raw|urlencode }}">
+              {{ result.recipe.name }}
+            </a>
+          </h3>
+
+          <p>Similarity score: {{ result.score }}%</p>
+          <p>Prep time: {{ result.recipe.prep_time }} minutes</p>
+
+          {% if result.recipe.cuisine %}
+            <p>Cuisine: {{ result.recipe.cuisine }}</p>
+          {% endif %}
+
+          {% if result.recipe.dietary_preference %}
+            <p>Dietary preference: {{ result.recipe.dietary_preference }}</p>
+          {% endif %}
+
+          {% if result.matched_ingredients %}
+            <p>
+              Shared ingredients:
+              {{ result.matched_ingredients|join:", " }}
+            </p>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No similar recipes found yet.</p>
+  {% endif %}
+</section>
+    <p>
+        <a href="/?ingredients={{ user_ingredients_raw }}">Back to search</a>
+    </p>
+</body>
+</html>
+
