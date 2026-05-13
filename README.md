@@ -91,3 +91,43 @@ Registers the models with the Django admin site so recipes, ingredients, and rec
    - a score for the recipe
 6. Recipes are sorted by score.
 7. The best matching recipes are displayed to the user.
+
+## How to Run the App
+
+From the project folder, install the dependencies:
+
+```bash
+uv sync
+```
+
+Run database migrations:
+
+```bash
+uv run python manage.py migrate
+```
+
+Create an admin user, if needed:
+
+```bash
+uv run python manage.py createsuperuser
+```
+
+Start the Django development server:
+
+```bash
+uv run python manage.py runserver
+```
+
+Then open the local server in a browser:
+
+```txt
+http://127.0.0.1:8000/
+```
+
+To add recipes manually, go to the Django admin page:
+
+```txt
+http://127.0.0.1:8000/admin/
+```
+
+Log in with the superuser account and add recipes, ingredients, and recipe-ingredient entries.
